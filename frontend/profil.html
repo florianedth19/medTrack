@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>MedTrack - Mon Profil</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+  <style>
+    body { background-color: #f7f9fc; }
+    .profile-card { max-width: 600px; margin: 40px auto; background: #fff; padding: 30px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+  </style>
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <div class="container">
+      <a class="navbar-brand d-flex align-items-center" href="#">
+        <img src="https://via.placeholder.com/50" alt="MedTrack Logo" class="me-2" style="border-radius:50%;">
+        <span>MedTrack</span>
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" 
+              aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+        <ul class="navbar-nav">
+          <li class="nav-item"><a class="nav-link" href="index.html">Accueil</a></li>
+          <li class="nav-item"><a class="nav-link active" href="profile.html">Mon Profil</a></li>
+          <li class="nav-item"><a class="nav-link" href="planification.html">Planification</a></li>
+          <li class="nav-item"><a class="nav-link" href="historique.html">Historique</a></li>
+          <li class="nav-item"><a class="nav-link" href="rapports.html">Rapports</a></li>
+          <li class="nav-item"><a class="nav-link" href="aide.html">Aide</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Contenu Profil -->
+  <div class="profile-card">
+    <h2 class="mb-4 text-center">Mon Profil</h2>
+    <div class="text-center mb-4">
+      <img src="https://via.placeholder.com/120" alt="Photo Profil" class="rounded-circle">
+    </div>
+    <form>
+      <div class="mb-3">
+        <label for="nom" class="form-label">Nom</label>
+        <input type="text" class="form-control" id="nom" placeholder="Votre nom">
+      </div>
+      <div class="mb-3">
+        <label for="prenom" class="form-label">Prénom</label>
+        <input type="text" class="form-control" id="prenom" placeholder="Votre prénom">
+      </div>
+      <div class="mb-3">
+        <label for="email" class="form-label">Email</label>
+        <input type="email" class="form-control" id="email" placeholder="Votre email">
+      </div>
+      <div class="mb-3">
+        <label for="dateNaissance" class="form-label">Date de Naissance</label>
+        <input type="date" class="form-control" id="dateNaissance">
+      </div>
+      <div class="mb-3">
+        <label for="infos" class="form-label">Informations médicales</label>
+        <textarea class="form-control" id="infos" rows="3" placeholder="Allergies, conditions, etc."></textarea>
+      </div>
+      <button type="submit" class="btn btn-success w-100">Enregistrer</button>
+    </form>
+  </div>
+
+  <!-- Boutons de Navigation -->
+  <div class="container">
+    <div class="page-nav d-flex justify-content-between">
+      <a href="index.html" class="btn btn-outline-primary">Page Précédente</a>
+      <a href="planification.html" class="btn btn-outline-primary">Page Suivante</a>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="text-center bg-dark text-white py-3 mt-5">
+    <div class="container">
+      <p>&copy; 2025 MedTrack. Tous droits réservés.</p>
+    </div>
+  </footer>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

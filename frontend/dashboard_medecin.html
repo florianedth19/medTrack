@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Médecin</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</head>
+<body class="bg-light">
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container">
+            <a class="navbar-brand d-flex align-items-center" href="#">
+                <img src="https://via.placeholder.com/50" alt="MedTrack Logo" class="me-2" style="border-radius:50%;">
+                <span>MedTrack</span>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item"><a class="nav-link active" href="dashboard_medecin.html">Dashboard</a></li>
+                    <li class="nav-item"><a class="nav-link" href="logout.html">Déconnexion</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Contenu principal -->
+    <div class="container mt-5">
+        <h2 class="text-center">Recherche de Patients</h2>
+
+        <!-- Barre de recherche -->
+        <div class="input-group my-4">
+            <input type="text" id="search-input" class="form-control" placeholder="Rechercher un patient par nom ou prénom...">
+            <button class="btn btn-primary" onclick="searchPatient()">Rechercher</button>
+        </div>
+
+        <div id="alert-container"></div> <!--Zone pour afficher l'alerte si patient non trouvé -->
+
+        <!-- Tableau des résultats -->
+        <table class="table table-striped" id="patients-table" style="display: none;">
+            <thead>
+                <tr>
+                    <th>Nom</th>
+                    <th>Prénom</th>
+                    <th>Email</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="patients-list">
+                <!--Résultats de la recherche -->
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        let usersData = 
+
+        document.addEventListener("DOMContentLoaded", function() {
+            const token = localStorage.getItem("token");
+            const user = JSON.parse(localStorage.getItem("user"));
+
+            if (!token || !user || user.role !== "medecin") {
+                window.location.href = "login.html"; 
+            }
+
+            // Récupération des utilisateurs au chargement
+            fetch("http://127.0.0.1:8000/api/users/", {
+                method: "GET",
+                headers: { "Authorization": `Token ${token}` }
+            })
+            .then(response => response.json())
+            .then(data => {
+                usersData = data; //Stocke les utilisateurs récupérés
+                console.log("Utilisateurs chargés :", usersData);
+            })
+            .catch(error => console.error("Erreur lors de la récupération des utilisateurs :", error));
+        });
+
+        function searchPatient() {
+            const searchValue = document.getElementById("search-input").value.toLowerCase();
+            const tableBody = document.getElementById("patients-list");
+            const table = document.getElementById("patients-table");
+            const alertContainer = document.getElementById("alert-container"); 
+
+            tableBody.innerHTML = "";  //Vide le tableau avant d'ajouter les résultats
+            alertContainer.innerHTML = ""; //Supprime les alertes précédentes
+
+            let found = false; // Permet de savoir si un patient a été trouvé
+
+            usersData.forEach(user => {
+                if (user.role === "patient" && 
+                    (user.first_name.toLowerCase().includes(searchValue) || 
+                     user.last_name.toLowerCase().includes(searchValue))) {
+                    
+                    found = true; //Un patient a été trouvé
+                    table.style.display = "table";  // Affiche le tableau
+                    const row = `<tr>
+                                    <td>${user.first_name}</td>
+                                    <td>${user.last_name}</td>
+                                    <td>${user.email}</td>
+                                    <td>
+                                        <a href="profil_medical.html?id=${user.id}" class="btn btn-info btn-sm">Voir Profil</a>
+                                        <a href="planification.html?id=${user.id}" class="btn btn-success btn-sm">Planifier Traitement</a>
+                                    </td>
+                                </tr>`;
+                    tableBody.innerHTML += row;
+                }
+            });
+
+            //Si aucun patient trouvé, afficher une alerte
+            if (!found) {
+                table.style.display = "none";  //Cache le tableau
+                alertContainer.innerHTML = `
+                    <div class="alert alert-danger text-center mt-3" role="alert">
+                        <strong>Patient introuvable !</strong> Vérifiez l'orthographe ou essayez un autre nom.
+                    </div>`;
+            }
+        }
+
+        // Permet de lancer la recherche avec la touche "Entrée"
+        document.getElementById("search-input").addEventListener("keyup", function(event) {
+            if (event.key === "Enter") {
+                searchPatient();
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>MedTrack - Accueil</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Bootstrap Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+  <style>
+    body {
+      background-color: #f7f9fc;
+      color: #333;
+    }
+    /* Bannière */
+    .hero {
+      background: url('https://via.placeholder.com/1200x400') center center/cover no-repeat;
+      position: relative;
+      height: 400px;
+      color: #fff;
+    }
+    .hero::before {
+      content: "";
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background-color: rgba(0, 0, 0, 0.5);
+    }
+    .hero-content {
+      position: relative;
+      z-index: 2;
+    }
+    .feature-icon {
+      font-size: 2rem;
+      margin-bottom: 10px;
+    }
+    /* Boutons de navigation entre pages */
+    .page-nav {
+      margin-top: 40px;
+      display: flex;
+      justify-content: space-between;
+    }
+    .page-nav a.btn {
+      min-width: 150px;
+    }
+    footer {
+      background-color: #333;
+      color: #fff;
+      padding: 20px 0;
+    }
+    footer a {
+      color: #fff;
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <div class="container">
+      <!-- Logo (remplacez l'URL par votre logo) -->
+      <a class="navbar-brand d-flex align-items-center" href="#">
+        <img src="https://via.placeholder.com/50" alt="MedTrack Logo" class="me-2" style="border-radius:50%;">
+        <span>MedTrack</span>
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" 
+              data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" 
+              aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+        <ul class="navbar-nav">
+          <li class="nav-item"><a class="nav-link active" href="index.html">Accueil</a></li>
+          <li class="nav-item"><a class="nav-link" href="profile.html">Mon Profil</a></li>
+          <li class="nav-item"><a class="nav-link" href="planification.html">Planification</a></li>
+          <li class="nav-item"><a class="nav-link" href="historique.html">Historique</a></li>
+          <li class="nav-item"><a class="nav-link" href="rapports.html">Rapports</a></li>
+          <li class="nav-item"><a class="nav-link" href="aide.html">Aide</a></li>
+
+          <!--si l'utilisateur est connecté-->
+          <li class=" nav-item" id="user-info" style=" display: none;" >
+            <a href="profil.html" class="nav-link"></a>
+            <i class="bi bi-person-circle"></i> <span id="user-name"></span>
+          </li>
+
+          <li class=" nav-item" id="login-btn">
+            <a class="btn btn-success" href="login.html">Connexion/Inscription</a>
+          </li>
+
+          <!--si l'utilisateur est connecté-->
+          <li class="nav-item" id="logout-btn" style="display: none;">
+            <button class="btn btn-danger">Déconnexion</button>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Bannière Principale -->
+  <header class="hero d-flex align-items-center">
+    <div class="container text-center hero-content">
+      <h1 class="display-4">Suivez vos traitements en toute simplicité</h1>
+      <p class="lead">Une solution complète pour ne plus jamais oublier vos médicaments</p>
+      <a href="profile.html" class="btn btn-lg btn-success">Commencer</a>
+    </div>
+  </header>
+
+  <!-- Section Fonctionnalités -->
+  <section class="container my-5">
+    <div class="row text-center">
+      <div class="col-md-3">
+        <div class="feature-icon text-primary mb-2">
+          <i class="bi bi-person-circle"></i>
+        </div>
+        <h5>Inscription & Profil</h5>
+        <p>Créez et gérez votre profil médical en toute sécurité.</p>
+      </div>
+      <div class="col-md-3">
+        <div class="feature-icon text-primary mb-2">
+          <i class="bi bi-calendar3"></i>
+        </div>
+        <h5>Planification</h5>
+        <p>Programmez vos prises de médicaments et recevez des rappels.</p>
+      </div>
+      <div class="col-md-3">
+        <div class="feature-icon text-primary mb-2">
+          <i class="bi bi-bell"></i>
+        </div>
+        <h5>Notifications</h5>
+        <p>Alertes personnalisées pour ne rien manquer.</p>
+      </div>
+      <div class="col-md-3">
+        <div class="feature-icon text-primary mb-2">
+          <i class="bi bi-bar-chart"></i>
+        </div>
+        <h5>Historique & Rapports</h5>
+        <p>Suivez vos traitements et partagez vos rapports avec votre médecin.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Boutons de Navigation entre pages -->
+  <div class="container">
+    <div class="page-nav">
+      <a href="profile.html" class="btn btn-outline-primary">Page Précédente</a>
+      <a href="planification.html" class="btn btn-outline-primary">Page Suivante</a>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="text-center mt-5">
+    <div class="container">
+      <p>&copy; 2025 MedTrack. Tous droits réservés.</p>
+      <p>
+        <a href="#">Politique de confidentialité</a> |
+        <a href="#">Conditions d'utilisation</a> |
+        <a href="#">Mentions légales</a>
+      </p>
+      <p>
+        <a href="#"><i class="bi bi-facebook"></i></a>
+        <a href="#"><i class="bi bi-twitter"></i></a>
+        <a href="#"><i class="bi bi-instagram"></i></a>
+      </p>
+    </div>
+  </footer>
+
+  <!-- Bootstrap JS (avec Popper) -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
+<script>
+  document.addEventListener("DOMContentLoaded", function(){
+    const token = localStorage.getItem("token");
+    console.log(token);
+    const user = JSON.parse(localStorage.getItem("user"));
+    const userInfo = document.getElementById("user-info");
+    const userName = document.getElementById("user-name");
+    const logout = document.getElementById("logout-btn");
+    const login = document.getElementById("login-btn");
+
+    //si l'utilisateur est connecté
+    if(token){
+      userInfo.style.dysplay = "block";
+      userName.textContent = `${user.first_name} ${user.last_name}`;
+      login.style.display = "none";
+      logout.style.display = "block";
+    };
+
+    //logique de deconnexion
+    logout.addEventListener("click", function(){
+      localStorage.removeItem("token");
+      localStorage.removeItem("user");
+      window.location.href = "login.html";
+      console.log("Déconnexion réussie");
+    })
+  })
+</script>
+
