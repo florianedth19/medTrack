@@ -56,52 +56,55 @@
 </head>
 <body>
   <!-- Navbar -->
-  <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-    <div class="container">
-      <!-- Logo (remplacez l'URL par votre logo) -->
+   <!-- Barre de navigation -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+  <div class="container">
       <a class="navbar-brand d-flex align-items-center" href="#">
-        <img src="https://via.placeholder.com/50" alt="MedTrack Logo" class="me-2" style="border-radius:50%;">
-        <span>MedTrack</span>
+          <img src="../doc/logo_medtrack.png" alt="MedTrack Logo" class="me-2 rounded-circle" height="50px" width="50px">
+          <span>MedTrack</span>
       </a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" 
               data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" 
               aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
+          <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
-        <ul class="navbar-nav">
-          <li class="nav-item"><a class="nav-link active" href="index.html">Accueil</a></li>
-          <li class="nav-item"><a class="nav-link" href="profile.html">Mon Profil</a></li>
-          <li class="nav-item"><a class="nav-link" href="planification.html">Planification</a></li>
-          <li class="nav-item"><a class="nav-link" href="historique.html">Historique</a></li>
-          <li class="nav-item"><a class="nav-link" href="rapports.html">Rapports</a></li>
-          <li class="nav-item"><a class="nav-link" href="aide.html">Aide</a></li>
+          <ul class="navbar-nav">
+              <li class="nav-item"><a class="nav-link active" href="accueil.html">Accueil</a></li>
+              <li class="nav-item"><a class="nav-link" href="profil.html">Mon Profil</a></li>
+              <li class="nav-item"><a class="nav-link" href="planification.html">Planification</a></li>
+              <li class="nav-item"><a class="nav-link" href="historique.html">Historique</a></li>
+              <li class="nav-item"><a class="nav-link" href="rapport.html">Rapports</a></li>
+              <li class="nav-item"><a class="nav-link" href="aide.html">Aide</a></li>
 
-          <!--si l'utilisateur est connecté-->
-          <li class=" nav-item" id="user-info" style=" display: none;" >
-            <a href="profil.html" class="nav-link"></a>
-            <i class="bi bi-person-circle"></i> <span id="user-name"></span>
-          </li>
+              <!-- Affichage conditionnel : si l'utilisateur est connecté -->
+              <li class="nav-item dropdown" id="user-info" style="display: none;">
+                  <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown">
+                      <i class="bi bi-person-circle"></i> <span id="user-name"></span>
+                  </a>
+                  <ul class="dropdown-menu dropdown-menu-end">
+                      <li><a class="dropdown-item" href="profil.html">Mon Profil</a></li>
+                      <li><hr class="dropdown-divider"></li>
+                      <li><button class="dropdown-item text-danger" id="logout-btn">Déconnexion</button></li>
+                  </ul>
+              </li>
 
-          <li class=" nav-item" id="login-btn">
-            <a class="btn btn-success" href="login.html">Connexion/Inscription</a>
-          </li>
-
-          <!--si l'utilisateur est connecté-->
-          <li class="nav-item" id="logout-btn" style="display: none;">
-            <button class="btn btn-danger">Déconnexion</button>
-          </li>
-        </ul>
+              <!-- Bouton de connexion/inscription si pas connecté -->
+              <li class="nav-item" id="login-btn">
+                  <a class="btn btn-success" href="login.html">Connexion / Inscription</a>
+              </li>
+          </ul>
       </div>
-    </div>
-  </nav>
+  </div>
+</nav>
+
 
   <!-- Bannière Principale -->
   <header class="hero d-flex align-items-center">
     <div class="container text-center hero-content">
       <h1 class="display-4">Suivez vos traitements en toute simplicité</h1>
       <p class="lead">Une solution complète pour ne plus jamais oublier vos médicaments</p>
-      <a href="profile.html" class="btn btn-lg btn-success">Commencer</a>
+      <a href="profil.html" class="btn btn-lg btn-success">Commencer</a>
     </div>
   </header>
 
@@ -139,14 +142,6 @@
     </div>
   </section>
 
-  <!-- Boutons de Navigation entre pages -->
-  <div class="container">
-    <div class="page-nav">
-      <a href="profile.html" class="btn btn-outline-primary">Page Précédente</a>
-      <a href="planification.html" class="btn btn-outline-primary">Page Suivante</a>
-    </div>
-  </div>
-
   <!-- Footer -->
   <footer class="text-center mt-5">
     <div class="container">
@@ -180,8 +175,8 @@
 
     //si l'utilisateur est connecté
     if(token){
-      userInfo.style.dysplay = "block";
-      userName.textContent = `${user.first_name} ${user.last_name}`;
+      userInfo.style.display = "block";
+      userName.textContent = `${user.first_name}`;
       login.style.display = "none";
       logout.style.display = "block";
     };

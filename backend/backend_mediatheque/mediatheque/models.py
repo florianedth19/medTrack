@@ -28,20 +28,11 @@ class ProfilMedical(models.Model):
     medecin_traitant = models.TextField(max_length=150, blank=True, null=True)
     historique = models.TextField(blank=True, null=True)
 
-# Model for medicament
-
-class Medicament(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    nom = models.CharField(max_length=150)
-    description = models.TextField(blank=True, null=True)
-    forme = models.CharField(max_length=150, blank=True, null=True, choices=[('comprime', 'Comprimé'), ('sirop', 'Sirop'), ('gelule', 'Gelule'), ('pommade', 'Pommade'), ('injection', 'Injection')])
-    durée_traitement = models.CharField(max_length=150, blank=True, null=True)
-
 # Model for planification
 class Planification(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     user_id = models.ForeignKey(User, on_delete=models.CASCADE, related_name='planifications')
-    medicament_id = models.ForeignKey(Medicament, on_delete=models.CASCADE, related_name='planifications')
+    medicament = models.CharField(max_length=150,blank=True, null=True)
     debut_traitement = models.DateField()
     fin_traitement = models.DateField()
     heure_prise = models.TimeField()

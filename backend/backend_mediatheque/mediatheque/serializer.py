@@ -18,6 +18,9 @@ class UserSerializer(serializers.ModelSerializer):
         )
         user.set_password(validated_data['password']) 
         user.save()
+
+        #creation profil medical
+        ProfilMedical.objects.create(user_id=user)
         return user
     
 class LoginSerializer(serializers.Serializer):
@@ -46,13 +49,14 @@ class LoginSerializer(serializers.Serializer):
         }
 
 class ProfilMedicalSerializer(serializers.ModelSerializer):
-    class Meta:
-        model=ProfilMedical
-        fields = '__all__'
+    user_id = serializers.PrimaryKeyRelatedField(read_only=True)  #assure que user_id n'est pas modifiable
+    maladies_chroniques = serializers.CharField(required=False)
+    allergies = serializers.CharField(required=False)
+    medecin_traitant = serializers.CharField(required=False)
+    historique = serializers.CharField(required=False)
 
-class MedicamentSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Medicament
+        model = ProfilMedical
         fields = '__all__'
 
 class PlanificationSerializer(serializers.ModelSerializer):

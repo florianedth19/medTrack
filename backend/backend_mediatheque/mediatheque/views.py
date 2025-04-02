@@ -39,10 +39,6 @@ class ProfilMedicalViewSet(viewsets.ModelViewSet):
     queryset = ProfilMedical.objects.all()
     serializer_class = ProfilMedicalSerializer
 
-class MedicamentViewSet(viewsets.ModelViewSet):
-    queryset = Medicament.objects.all()
-    serializer_class = MedicamentSerializer
-
 class PlanificationViewSet(viewsets.ModelViewSet):
     queryset = Planification.objects.all()
     serializer_class = PlanificationSerializer
