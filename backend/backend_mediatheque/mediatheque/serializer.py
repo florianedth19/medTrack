@@ -79,7 +79,12 @@ class RapportSerializer(serializers.ModelSerializer):
         model = Rapport
         fields = '__all__'
 
-class IndicateurSanteSerializer(serializers.ModelSerializer):
+class IndicateurSuiviSerializer(serializers.ModelSerializer):
     class Meta:
-        model = IndicateurSante
+        model = IndicateurSuivi
+        fields = '__all__'
+
+class MedicamentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Medicament
         fields = '__all__'

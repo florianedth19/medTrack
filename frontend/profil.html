@@ -27,12 +27,13 @@
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
         <div class="container">
-            <a class="navbar-brand d-flex align-items-center" href="#">
+            <a class="navbar-brand d-flex align-items-center" href="accueil.html">
                 <img src="../doc/logo_medtrack.png" alt="MedTrack Logo" class="me-2 rounded-circle" height="50px" width="50px">
                 <span>MedTrack</span>
             </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" 
-                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" 
+                    data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" 
+                    aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
@@ -41,12 +42,30 @@
                     <li class="nav-item"><a class="nav-link active" href="profil.html">Mon Profil</a></li>
                     <li class="nav-item"><a class="nav-link" href="planification.html">Planification</a></li>
                     <li class="nav-item"><a class="nav-link" href="historique.html">Historique</a></li>
+                    <li class="nav-item"><a class="nav-link" href="suivi_indicateurs.html">Suivi des Indicateurs</a></li>
                     <li class="nav-item"><a class="nav-link" href="rapport.html">Rapports</a></li>
                     <li class="nav-item"><a class="nav-link" href="aide.html">Aide</a></li>
+      
+                    <!-- Affichage conditionnel : si l'utilisateur est connecté -->
+                    <li class="nav-item dropdown" id="user-info" style="display: none;">
+                        <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown">
+                            <i class="bi bi-person-circle"></i> <span id="user-name"></span>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li><a class="dropdown-item" href="profil.html">Mon Profil</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><button class="dropdown-item text-danger" id="logout-btn">Déconnexion</button></li>
+                        </ul>
+                    </li>
+      
+                    <!-- Bouton de connexion/inscription si pas connecté -->
+                    <li class="nav-item" id="login-btn">
+                        <a class="btn btn-success" href="login.html">Connexion / Inscription</a>
+                    </li>
                 </ul>
             </div>
         </div>
-    </nav>
+      </nav>
 
     <!-- Contenu Profil -->
     <div class="profile-card">
@@ -93,61 +112,81 @@
 
     <!-- Scripts -->
     <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            const token = localStorage.getItem("token");
-            const user = JSON.parse(localStorage.getItem("user"));
+                    document.addEventListener("DOMContentLoaded", function() {
+                        const token = localStorage.getItem("token");
+                        const user = JSON.parse(localStorage.getItem("user"));
 
-            if (!token || !user) {
-                window.location.href = "login.html";  // Redirection si non connecté
-            }
+                        if (!token || !user) {
+                            window.location.href = "login.html";  // Redirection si non connecté
+                        }
 
-            // Préremplir les champs utilisateur
-            document.getElementById("nom").value = user.last_name;
-            document.getElementById("prenom").value = user.first_name;
-            document.getElementById("email").value = user.email;
+                        // Préremplir les champs utilisateur
+                        document.getElementById("nom").value = user.last_name;
+                        document.getElementById("prenom").value = user.first_name;
+                        document.getElementById("email").value = user.email;
 
-            // Récupérer tous les profils médicaux et sélectionner le bon
-            fetch(`http://127.0.0.1:8000/api/profils/`, {
-                method: "GET",
-                headers: { "Authorization": `Token ${token}` }
-            })
-            .then(response => response.json())
-            .then(profiles => {
-                const userProfile = profiles.find(profile => profile.user_id === user.id);
-                
-                if (userProfile) {
-                  profileId = userProfile.id;
-                    document.getElementById("maladies_chroniques").value = userProfile.maladies_chroniques || "";
-                    document.getElementById("allergies").value = userProfile.allergies || "";
-                    document.getElementById("medecin_traitant").value = userProfile.medecin_traitant || "";
-                    document.getElementById("historique").value = userProfile.historique || "";
-                } else {
-                    console.warn("Aucun profil médical trouvé pour cet utilisateur.");
+                        // Récupérer le profil médical de l'utilisateur
+                        fetch(`http://127.0.0.1:8000/api/profils/`, {
+                            method: "GET",
+                            headers: { "Authorization": `Token ${token}` }
+                        })
+                        .then(response => response.json())
+                        .then(profiles => {
+                            const userProfile = profiles.find(profile => profile.user_id === user.id);
+                            
+                            if (userProfile) {
+                                profileId = userProfile.id;
+                                document.getElementById("maladies_chroniques").value = userProfile.maladies_chroniques || "";
+                                document.getElementById("allergies").value = userProfile.allergies || "";
+                                document.getElementById("medecin_traitant").value = userProfile.medecin_traitant || "";
+                                document.getElementById("historique").value = userProfile.historique || "";
+                            } else {
+                                console.warn("Aucun profil médical trouvé pour cet utilisateur.");
+                            }
+                        })
+                        .catch(error => console.error("Erreur lors du chargement des profils médicaux :", error));
+
+                        // Gestion de la mise à jour du profil médical
+                        document.getElementById("profile-form").addEventListener("submit", function(event) {
+                event.preventDefault(); // Empêche le rechargement de la page
+
+                // Préparer les données mises à jour
+                const updatedData = {};
+                const maladiesChroniques = document.getElementById("maladies_chroniques").value;
+                const allergies = document.getElementById("allergies").value;
+                const medecinTraitant = document.getElementById("medecin_traitant").value;
+                const historique = document.getElementById("historique").value;
+
+                // Ajouter uniquement les champs modifiés
+                if (maladiesChroniques) updatedData.maladies_chroniques = maladiesChroniques;
+                if (allergies) updatedData.allergies = allergies;
+                if (medecinTraitant) updatedData.medecin_traitant = medecinTraitant;
+                if (historique) updatedData.historique = historique;
+
+                // Vérifier si des données doivent être envoyées
+                if (Object.keys(updatedData).length === 0) {
+                    alert("Aucune modification détectée.");
+                    return;
                 }
-            })
-            .catch(error => console.error("Erreur lors du chargement des profils médicaux :", error));
 
-            // Gestion de la mise à jour du profil médical
-            document.getElementById("profile-form").addEventListener("submit", function(event) {
-                event.preventDefault();  // Empêche le rechargement de la page
-
-                const updatedData = {
-                    maladies_chroniques: document.getElementById("maladies_chroniques").value,
-                    allergies: document.getElementById("allergies").value,
-                    medecin_traitant: document.getElementById("medecin_traitant").value,
-                    historique: document.getElementById("historique").value
-                };
-                console.log(updatedData);
-
+                // Envoyer la requête PATCH
                 fetch(`http://127.0.0.1:8000/api/profils/${profileId}/`, {
-                    method: "PUT",
+                    method: "PATCH",
                     headers: {
                         "Authorization": `Token ${token}`,
                         "Content-Type": "application/json"
                     },
                     body: JSON.stringify(updatedData)
                 })
-                .then(response => response.json())
+                .then(response => {
+                    if (!response.ok) {
+                        return response.json().then(errorData => {
+                            console.error("Erreur API :", errorData);
+                            throw new Error("Erreur lors de la mise à jour du profil médical.");
+                        });
+                    }
+                    return response.json();
+                })
                 .then(data => {
                     alert("Profil médical mis à jour avec succès !");
                 })
@@ -158,5 +197,34 @@
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!--scprit gérant la connexion et déconnexion-->
+<script>
+    document.addEventListener("DOMContentLoaded", function(){
+      const token = localStorage.getItem("token");
+      console.log(token);
+      const user = JSON.parse(localStorage.getItem("user"));
+      const userInfo = document.getElementById("user-info");
+      const userName = document.getElementById("user-name");
+      const logout = document.getElementById("logout-btn");
+      const login = document.getElementById("login-btn");
+  
+      //si l'utilisateur est connecté
+      if(token){
+        userInfo.style.display = "block";
+        userName.textContent = `${user.first_name}`;
+        login.style.display = "none";
+        logout.style.display = "block";
+      };
+  
+      //logique de deconnexion
+      logout.addEventListener("click", function(){
+        localStorage.removeItem("token");
+        localStorage.removeItem("user");
+        window.location.href = "login.html";
+        console.log("Déconnexion réussie");
+      })
+    })
+  </script>
 </body>
 </html>

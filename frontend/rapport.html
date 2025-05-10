@@ -4,83 +4,119 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>MedTrack - Rapports</title>
-  <!-- Bootstrap CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
   <style>
     body { background-color: #f7f9fc; }
     .card { margin-bottom: 30px; }
+    .section-title { color: #007bff; font-weight: bold; }
+    .report-summary { font-size: 1.1rem; }
+    .card-header { font-size: 1.2rem; font-weight: bold; }
+    .card-body { font-size: 1rem; }
+    .btn-custom { background-color: #28a745; color: white; }
   </style>
 </head>
 <body>
   <!-- Navbar -->
   <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
     <div class="container">
-      <a class="navbar-brand d-flex align-items-center" href="#">
-        <img src="../doc/logo_medtrack.png" alt="MedTrack Logo" class="me-2 rounded-circle" height="50px" width="50px">
-        <span>MedTrack</span>
-      </a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" 
-              data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" 
-              aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
-        <ul class="navbar-nav">
-          <li class="nav-item"><a class="nav-link" href="accueil.html">Accueil</a></li>
-          <li class="nav-item"><a class="nav-link" href="profil.html">Mon Profil</a></li>
-          <li class="nav-item"><a class="nav-link" href="planification.html">Planification</a></li>
-          <li class="nav-item"><a class="nav-link" href="historique.html">Historique</a></li>
-          <li class="nav-item"><a class="nav-link active" href="rapport.html">Rapports</a></li>
-          <li class="nav-item"><a class="nav-link" href="aide.html">Aide</a></li>
-        </ul>
-      </div>
+        <a class="navbar-brand d-flex align-items-center" href="accueil.html">
+            <img src="../doc/logo_medtrack.png" alt="MedTrack Logo" class="me-2 rounded-circle" height="50px" width="50px">
+            <span>MedTrack</span>
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" 
+                data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" 
+                aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item"><a class="nav-link" href="accueil.html">Accueil</a></li>
+                <li class="nav-item"><a class="nav-link" href="profil.html">Mon Profil</a></li>
+                <li class="nav-item"><a class="nav-link" href="planification.html">Planification</a></li>
+                <li class="nav-item"><a class="nav-link" href="historique.html">Historique</a></li>
+                <li class="nav-item"><a class="nav-link" href="suivi_indicateurs.html">Suivi des Indicateurs</a></li>
+                <li class="nav-item"><a class="nav-link active" href="rapport.html">Rapports</a></li>
+                <li class="nav-item"><a class="nav-link" href="aide.html">Aide</a></li>
+  
+                <!-- Affichage conditionnel : si l'utilisateur est connecté -->
+                <li class="nav-item dropdown" id="user-info" style="display: none;">
+                    <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown">
+                        <i class="bi bi-person-circle"></i> <span id="user-name"></span>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end">
+                        <li><a class="dropdown-item" href="profil.html">Mon Profil</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><button class="dropdown-item text-danger" id="logout-btn">Déconnexion</button></li>
+                    </ul>
+                </li>
+  
+                <!-- Bouton de connexion/inscription si pas connecté -->
+                <li class="nav-item" id="login-btn">
+                    <a class="btn btn-success" href="login.html">Connexion / Inscription</a>
+                </li>
+            </ul>
+        </div>
     </div>
   </nav>
 
   <!-- Contenu Rapports -->
   <div class="container my-5">
-    <h2 class="text-center mb-4">Rapports et Notifications</h2>
-    <div class="row">
-      <!-- Rapport Hebdomadaire -->
-      <div class="col-md-6">
-        <div class="card">
-          <div class="card-header">Rapport Hebdomadaire</div>
-          <div class="card-body">
-            <p>[Résumé et statistiques de la semaine]</p>
-            <button class="btn btn-success">Partager le rapport</button>
-          </div>
-        </div>
-      </div>
-      <!-- Rapport Mensuel -->
-      <div class="col-md-6">
-        <div class="card">
-          <div class="card-header">Rapport Mensuel</div>
-          <div class="card-body">
-            <p>[Détails et graphiques mensuels]</p>
-            <button class="btn btn-success">Partager le rapport</button>
-          </div>
-        </div>
-      </div>
-    </div>
-    <!-- Historique des Notifications -->
-    <div class="card mt-4">
-      <div class="card-header">Historique des Notifications</div>
-      <div class="card-body">
-        <ul class="list-group">
-          <li class="list-group-item">2025-04-01 08:00 - Rappel pour Médicament 1</li>
-          <li class="list-group-item">2025-04-01 12:00 - Rappel pour Médicament 2</li>
-          <!-- Autres notifications -->
-        </ul>
-      </div>
-    </div>
-  </div>
+    <h2 class="text-center mb-4">Rapports Médicaux</h2>
 
-  <!-- Boutons de Navigation -->
-  <div class="container">
-    <div class="page-nav d-flex justify-content-between">
-      <a href="historique.html" class="btn btn-outline-primary">Page Précédente</a>
-      <a href="aide.html" class="btn btn-outline-primary">Page Suivante</a>
+    <!-- Section de résumé général -->
+    <div class="card">
+      <div class="card-header">Résumé des Médicaments Pris</div>
+      <div class="card-body">
+        <p class="report-summary">Vous avez pris <strong>5 médicaments</strong> au cours du dernier mois. Les plus courants étaient :</p>
+        <ul>
+          <li>Médicament 1 - 20 comprimés</li>
+          <li>Médicament 2 - 15 comprimés</li>
+          <li>Médicament 3 - 10 comprimés</li>
+        </ul>
+        <p>Le respect du plan de médication était <strong>88%</strong> pour ce mois.</p>
+        <p>Consulter les rapports détaillés pour plus d'informations sur chaque médicament.</p>
+      </div>
+    </div>
+
+    <!-- Section d'indicateurs de santé -->
+    <div class="card">
+      <div class="card-header">Résumé des Indicateurs de Santé</div>
+      <div class="card-body">
+        <p class="report-summary">Voici un résumé des principales mesures de santé suivies :</p>
+        <ul>
+          <li><strong>Glycémie</strong> : Moyenne de 115 mg/dL, avec des pics notés le 2025-04-01 à 160 mg/dL.</li>
+          <li><strong>Pression artérielle</strong> : Moyenne de 125/80 mmHg.</li>
+          <li><strong>Poids</strong> : Variation de 1.2 kg au cours du mois, passant de 72.4 kg à 73.6 kg.</li>
+          <li><strong>Taille</strong> : 170 cm (inchangée). </li>
+        </ul>
+        <p>Ces indicateurs sont suivis régulièrement pour évaluer l'efficacité des traitements. Vous pouvez consulter les graphiques détaillés dans la section <strong>Suivi des Indicateurs</strong>.</p>
+      </div>
+    </div>
+
+    <!-- Section de recommandations -->
+    <div class="card">
+      <div class="card-header">Recommandations Médicales</div>
+      <div class="card-body">
+        <p>Voici les recommandations pour améliorer votre santé :</p>
+        <ul>
+          <li>Maintenir une alimentation équilibrée, avec moins de sucre pour contrôler la glycémie.</li>
+          <li>Faire de l'exercice régulièrement pour maintenir une pression artérielle saine.</li>
+          <li>Suivre de près l'évolution du poids et consulter un nutritionniste si nécessaire.</li>
+        </ul>
+        <p>Ces recommandations ont été basées sur vos données et votre historique médical. Il est conseillé de consulter un professionnel de santé pour un suivi personnalisé.</p>
+      </div>
+    </div>
+
+    <!-- Section de suivi des résultats -->
+    <div class="card">
+      <div class="card-header">Suivi des Résultats</div>
+      <div class="card-body">
+        <p class="report-summary">Vous pouvez suivre vos résultats dans les pages <strong>Historique</strong> et <strong>Suivi des Indicateurs</strong>.</p>
+        <p>Rappelez-vous que les résultats sont stockés de manière sécurisée et peuvent être consultés à tout moment pour vérifier les progrès.</p>
+        <a href="historique.html" class="btn btn-custom">Voir l'Historique des Médicaments</a>
+        <a href="suivi_indicateurs.html" class="btn btn-outline-primary mt-2">Consulter le Suivi des Indicateurs</a>
+      </div>
     </div>
   </div>
 
@@ -93,13 +129,34 @@
 
   <!-- Bootstrap JS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+  <!--scprit gérant la connexion et déconnexion-->
+<script>
+  document.addEventListener("DOMContentLoaded", function(){
+    const token = localStorage.getItem("token");
+    console.log(token);
+    const user = JSON.parse(localStorage.getItem("user"));
+    const userInfo = document.getElementById("user-info");
+    const userName = document.getElementById("user-name");
+    const logout = document.getElementById("logout-btn");
+    const login = document.getElementById("login-btn");
+
+    //si l'utilisateur est connecté
+    if(token){
+      userInfo.style.display = "block";
+      userName.textContent = `${user.first_name}`;
+      login.style.display = "none";
+      logout.style.display = "block";
+    };
+
+    //logique de deconnexion
+    logout.addEventListener("click", function(){
+      localStorage.removeItem("token");
+      localStorage.removeItem("user");
+      window.location.href = "login.html";
+      console.log("Déconnexion réussie");
+    })
+  })
+</script>
 </body>
 </html>
-<script>
-  const token= localStorage.getItem("token");
-  if (!token) {
-    window.location.href = "login.html";
-  }else{
-    console.log("Token: ", token);
-  }
-</script>

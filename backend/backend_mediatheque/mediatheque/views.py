@@ -55,6 +55,28 @@ class RapportViewSet(viewsets.ModelViewSet):
     queryset = Rapport.objects.all()
     serializer_class = RapportSerializer
 
-class IndicateurSanteViewSet(viewsets.ModelViewSet):
-    queryset = IndicateurSante.objects.all()
-    serializer_class = IndicateurSanteSerializer
+class IndicateurSuiviViewSet(viewsets.ModelViewSet):
+    queryset = IndicateurSuivi.objects.all()
+    serializer_class = IndicateurSuiviSerializer
+    def get_queryset(self):
+        return IndicateurSuivi.objects.filter(user_id=self.request.user)
+    
+
+    
+class MedicamentViewSet(viewsets.ModelViewSet):
+    queryset = Medicament.objects.all()
+    serializer_class = MedicamentSerializer
+    #permission_classes = [IsAuthenticated]
+    def get_queryset(self):
+        # Retourner uniquement les médicaments de l'utilisateur connecté
+        return Medicament.objects.filter(user_id=self.request.user)
+
+    @action(detail=True, methods=['patch'], url_path='marquer-pris')
+    def marquer_pris(self, request, pk=None):
+        medicament = self.get_object()
+        medicament.pris = not medicament.pris  # Inverse l'état
+        medicament.save()
+        return Response({"message": f"Le médicament a été {'marqué comme pris' if medicament.pris else 'marqué comme non pris'}."}, status=status.HTTP_200_OK)
+
+    
+        

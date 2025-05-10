@@ -67,10 +67,25 @@ class Rapport(models.Model):
     message = models.TextField()
     lu = models.BooleanField(default=False)
 
-# Model for indicateurSante
-class IndicateurSante(models.Model):
+# Model for indicateur
+class IndicateurSuivi(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="indicateurs")
+    date = models.DateField()
+    glycemie = models.FloatField()
+    pression_systolique = models.IntegerField()
+    pression_diastolique = models.IntegerField()
+    poids = models.FloatField()
+    taille = models.FloatField()
+
+    def __str__(self):
+        return f"Indicateur de {self.user.username} - {self.date}"
+
+# Model for medicament
+class Medicament(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    user_id = models.ForeignKey(User, on_delete=models.CASCADE, related_name='indicateurs')
-    type_indicateur = models.CharField(max_length=100,choices=[('poids', 'Poids'), ('pression', 'Pression Arterielle',),('glycemie', 'Glycemie')])
-    valeur = models.FloatField()
-    date_mesure = models.DateField(auto_now=True)
+    user_id = models.ForeignKey(User, on_delete=models.CASCADE, related_name='medicaments')
+    nom = models.CharField(max_length=150)
+    heure_prise = models.TimeField(default="00:00")
+    dosage = models.CharField(max_length=150, blank=True, null=True)
+    commentaire = models.TextField(blank=True, null=True)
+    pris = models.BooleanField(default=False)  # Nouveau champ booléen

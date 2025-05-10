@@ -59,7 +59,7 @@
    <!-- Barre de navigation -->
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
   <div class="container">
-      <a class="navbar-brand d-flex align-items-center" href="#">
+      <a class="navbar-brand d-flex align-items-center" href="accueil.html">
           <img src="../doc/logo_medtrack.png" alt="MedTrack Logo" class="me-2 rounded-circle" height="50px" width="50px">
           <span>MedTrack</span>
       </a>
@@ -74,6 +74,7 @@
               <li class="nav-item"><a class="nav-link" href="profil.html">Mon Profil</a></li>
               <li class="nav-item"><a class="nav-link" href="planification.html">Planification</a></li>
               <li class="nav-item"><a class="nav-link" href="historique.html">Historique</a></li>
+              <li class="nav-item"><a class="nav-link" href="suivi_indicateurs.html">Suivi des Indicateurs</a></li>
               <li class="nav-item"><a class="nav-link" href="rapport.html">Rapports</a></li>
               <li class="nav-item"><a class="nav-link" href="aide.html">Aide</a></li>
 
@@ -104,7 +105,7 @@
     <div class="container text-center hero-content">
       <h1 class="display-4">Suivez vos traitements en toute simplicité</h1>
       <p class="lead">Une solution complète pour ne plus jamais oublier vos médicaments</p>
-      <a href="profil.html" class="btn btn-lg btn-success">Commencer</a>
+      <a href="planification.html" class="btn btn-lg btn-success">Commencer</a>
     </div>
   </header>
 
@@ -163,6 +164,8 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
+
+<!--scprit gérant la connexion et déconnexion-->
 <script>
   document.addEventListener("DOMContentLoaded", function(){
     const token = localStorage.getItem("token");

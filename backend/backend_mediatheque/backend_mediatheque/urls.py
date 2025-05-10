@@ -29,7 +29,8 @@ router.register(r'planifications', PlanificationViewSet)
 router.register(r'historique', HistoriquePriseViewSet)
 router.register(r'notifications', NotificationViewSet)
 router.register(r'rapports', RapportViewSet)
-router.register(r'indicateurs', IndicateurSanteViewSet)
+router.register(r'indicateurs', IndicateurSuiviViewSet)
+router.register(r'medicaments', MedicamentViewSet)
 
 urlpatterns = [
     path('api/', include(router.urls)),

@@ -16,31 +16,55 @@
   <!-- Navbar -->
   <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
     <div class="container">
-      <a class="navbar-brand d-flex align-items-center" href="#">
-        <img src="../doc/logo_medtrack.png" alt="MedTrack Logo" class="me-2 rounded-circle" height="50px" width="50px">
-        <span>MedTrack</span>
-      </a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" 
-              data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" 
-              aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
-        <ul class="navbar-nav">
-          <li class="nav-item"><a class="nav-link" href="accueil.html">Accueil</a></li>
-          <li class="nav-item"><a class="nav-link" href="profil.html">Mon Profil</a></li>
-          <li class="nav-item"><a class="nav-link" href="planification.html">Planification</a></li>
-          <li class="nav-item"><a class="nav-link active" href="historique.html">Historique</a></li>
-          <li class="nav-item"><a class="nav-link" href="rapport.html">Rapports</a></li>
-          <li class="nav-item"><a class="nav-link" href="aide.html">Aide</a></li>
-        </ul>
-      </div>
+        <a class="navbar-brand d-flex align-items-center" href="accueil.html">
+            <img src="../doc/logo_medtrack.png" alt="MedTrack Logo" class="me-2 rounded-circle" height="50px" width="50px">
+            <span>MedTrack</span>
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" 
+                data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" 
+                aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item"><a class="nav-link" href="accueil.html">Accueil</a></li>
+                <li class="nav-item"><a class="nav-link" href="profil.html">Mon Profil</a></li>
+                <li class="nav-item"><a class="nav-link" href="planification.html">Planification</a></li>
+                <li class="nav-item"><a class="nav-link active" href="historique.html">Historique</a></li>
+                <li class="nav-item"><a class="nav-link" href="suivi_indicateurs.html">Suivi des Indicateurs</a></li>
+                <li class="nav-item"><a class="nav-link" href="rapport.html">Rapports</a></li>
+                <li class="nav-item"><a class="nav-link" href="aide.html">Aide</a></li>
+  
+                <!-- Affichage conditionnel : si l'utilisateur est connecté -->
+                <li class="nav-item dropdown" id="user-info" style="display: none;">
+                    <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown">
+                        <i class="bi bi-person-circle"></i> <span id="user-name"></span>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end">
+                        <li><a class="dropdown-item" href="profil.html">Mon Profil</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><button class="dropdown-item text-danger" id="logout-btn">Déconnexion</button></li>
+                    </ul>
+                </li>
+  
+                <!-- Bouton de connexion/inscription si pas connecté -->
+                <li class="nav-item" id="login-btn">
+                    <a class="btn btn-success" href="login.html">Connexion / Inscription</a>
+                </li>
+            </ul>
+        </div>
     </div>
   </nav>
 
   <!-- Contenu Historique -->
   <div class="container my-5">
     <h2 class="text-center mb-4">Historique Médical</h2>
+    
+    <!-- Bouton Suivi des Indicateurs -->
+    <div class="d-flex justify-content-center mb-4">
+      <a href="suivi_indicateurs.html" class="btn btn-outline-primary">Suivi des Indicateurs</a>
+    </div>
+
     <!-- Historique des Prises -->
     <div class="card">
       <div class="card-header">Historique des Prises</div>
@@ -55,37 +79,20 @@
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>2025-04-01</td>
-              <td>Médicament1</td>
-              <td>08:00</td>
-              <td>Pris</td>
-            </tr>
-            <tr>
-              <td>2025-04-01</td>
-              <td>Médicament2</td>
-              <td>12:00</td>
-              <td>Oublié</td>
-            </tr>
-            <!-- Autres lignes si nécessaire -->
+            <!-- Indicateur de chargement -->
+            <tr id="loading-row">
+              <td colspan="4" class="text-center">Chargement des données...</td>
+          </tr>
           </tbody>
         </table>
       </div>
     </div>
-    <!-- Suivi des Indicateurs -->
-    <div class="card">
-      <div class="card-header">Suivi des Indicateurs de Santé</div>
-      <div class="card-body">
-        <p>[Graphiques interactifs pour pression, glycémie, poids, etc.]</p>
-      </div>
-    </div>
-  </div>
-
+    
   <!-- Boutons de Navigation -->
   <div class="container">
     <div class="page-nav d-flex justify-content-between">
       <a href="planification.html" class="btn btn-outline-primary">Page Précédente</a>
-      <a href="rapports.html" class="btn btn-outline-primary">Page Suivante</a>
+      <a href="rapport.html" class="btn btn-outline-primary">Page Suivante</a>
     </div>
   </div>
 
@@ -98,5 +105,73 @@
 
   <!-- Bootstrap JS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    // Ajoutez ce script dans la page historique.html
+
+    document.addEventListener("DOMContentLoaded", function () {
+      const token = localStorage.getItem("token");
+
+      if (!token) {
+        window.location.href = "login.html"; // Redirection si non connecté
+      }
+
+      const tbody = document.querySelector("tbody");
+
+      // Charger les médicaments depuis l'API
+      fetch("http://127.0.0.1:8000/api/medicaments/", {
+        method: "GET",
+        headers: { "Authorization": `Token ${token}` },
+      })
+        .then((response) => response.json())
+        .then((medicaments) => {
+          tbody.innerHTML = ""; // Vider le tableau
+
+          if (medicaments.length === 0) {
+            tbody.innerHTML = `<tr><td colspan="4" class="text-center">Aucun médicament disponible.</td></tr>`;
+            return;
+          }
+
+          medicaments.forEach((medicament) => {
+            const row = document.createElement("tr");
+            row.innerHTML = `
+              <td>${new Date().toLocaleDateString()}</td>
+              <td>${medicament.nom}</td>
+              <td>${medicament.heure_prise}</td>
+              <td>${medicament.pris ? "Pris" : "Non Pris"}</td>
+            `;
+            tbody.appendChild(row);
+          });
+        })
+        .catch((error) => console.error("Erreur lors du chargement des médicaments :", error));
+    });
+  </script>
+  <!--scprit gérant la connexion et déconnexion-->
+<script>
+  document.addEventListener("DOMContentLoaded", function(){
+    const token = localStorage.getItem("token");
+    console.log(token);
+    const user = JSON.parse(localStorage.getItem("user"));
+    const userInfo = document.getElementById("user-info");
+    const userName = document.getElementById("user-name");
+    const logout = document.getElementById("logout-btn");
+    const login = document.getElementById("login-btn");
+
+    //si l'utilisateur est connecté
+    if(token){
+      userInfo.style.display = "block";
+      userName.textContent = `${user.first_name}`;
+      login.style.display = "none";
+      logout.style.display = "block";
+    };
+
+    //logique de deconnexion
+    logout.addEventListener("click", function(){
+      localStorage.removeItem("token");
+      localStorage.removeItem("user");
+      window.location.href = "login.html";
+      console.log("Déconnexion réussie");
+    })
+  })
+</script>
 </body>
 </html>

@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>MedTrack - Suivi des Indicateurs</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body { background-color: #f7f9fc; }
+    .card { margin-bottom: 30px; }
+    .chart-container { position: relative; height: 400px; width: 100%; }
+  </style>
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <div class="container">
+        <a class="navbar-brand d-flex align-items-center" href="accueil.html">
+            <img src="../doc/logo_medtrack.png" alt="MedTrack Logo" class="me-2 rounded-circle" height="50px" width="50px">
+            <span>MedTrack</span>
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" 
+                data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" 
+                aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item"><a class="nav-link" href="accueil.html">Accueil</a></li>
+                <li class="nav-item"><a class="nav-link" href="profil.html">Mon Profil</a></li>
+                <li class="nav-item"><a class="nav-link" href="planification.html">Planification</a></li>
+                <li class="nav-item"><a class="nav-link" href="historique.html">Historique</a></li>
+                <li class="nav-item"><a class="nav-link active" href="suivi_indicateurs.html">Suivi des Indicateurs</a></li>
+                <li class="nav-item"><a class="nav-link" href="rapport.html">Rapports</a></li>
+                <li class="nav-item"><a class="nav-link" href="aide.html">Aide</a></li>
+  
+                <!-- Affichage conditionnel : si l'utilisateur est connecté -->
+                <li class="nav-item dropdown" id="user-info" style="display: none;">
+                    <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown">
+                        <i class="bi bi-person-circle"></i> <span id="user-name"></span>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end">
+                        <li><a class="dropdown-item" href="profil.html">Mon Profil</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><button class="dropdown-item text-danger" id="logout-btn">Déconnexion</button></li>
+                    </ul>
+                </li>
+  
+                <!-- Bouton de connexion/inscription si pas connecté -->
+                <li class="nav-item" id="login-btn">
+                    <a class="btn btn-success" href="login.html">Connexion / Inscription</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+  </nav>
+
+  <!-- Contenu Suivi des Indicateurs -->
+  <div class="container my-5">
+    <h2 class="text-center mb-4">Suivi des Indicateurs de Santé</h2>
+
+    <!-- Formulaire d'ajout des mesures -->
+    <div class="card mb-4">
+      <div class="card-header">Ajouter une mesure</div>
+      <div class="card-body">
+        <form id="form-indicateur">
+          <div class="mb-3">
+            <label for="date" class="form-label">Date</label>
+            <input type="date" id="date" class="form-control" required>
+          </div>
+          <div class="mb-3">
+            <label for="glycemie" class="form-label">Glycémie (mg/dL)</label>
+            <input type="number" id="glycemie" class="form-control" required>
+          </div>
+          <div class="mb-3">
+            <label for="pression-systolique" class="form-label">Pression Artérielle (Systolique/Diastolique)</label>
+            <div class="d-flex">
+              <input type="number" id="pression-systolique" class="form-control" placeholder="Systolique" required>
+              <input type="number" id="pression-diastolique" class="form-control ms-2" placeholder="Diastolique" required>
+            </div>
+          </div>
+          <div class="mb-3">
+            <label for="poids" class="form-label">Poids (kg)</label>
+            <input type="number" id="poids" class="form-control" required>
+          </div>
+          <div class="mb-3">
+            <label for="taille" class="form-label">Taille (cm)</label>
+            <input type="number" id="taille" class="form-control" required>
+          </div>
+          <button type="submit" class="btn btn-primary">Ajouter</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Historique des mesures -->
+    <div class="card mb-4">
+      <div class="card-header">Historique des Mesures</div>
+      <div class="card-body">
+        <table id="historique-table" class="table table-bordered">
+          <thead class="table-light">
+            <tr>
+              <th>Date</th>
+              <th>Glycémie (mg/dL)</th>
+              <th>Pression (Systolique/Diastolique)</th>
+              <th>Poids (kg)</th>
+              <th>Taille (cm)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Historique sera chargé ici dynamiquement -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Graphiques -->
+    <div class="card mb-4">
+      <div class="card-header">Graphiques d'Évolution</div>
+      <div class="card-body">
+        <div class="chart-container">
+          <canvas id="graph-poids"></canvas>
+        </div>
+        <div class="chart-container">
+          <canvas id="graph-glycemie"></canvas>
+        </div>
+        <div class="chart-container">
+          <canvas id="graph-pression"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="text-center bg-dark text-white py-3 mt-5">
+    <div class="container">
+      <p>&copy; 2025 MedTrack. Tous droits réservés.</p>
+    </div>
+  </footer>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  
+  <script>
+    // Variables globales pour les graphiques
+    let poidsChart = null;
+    let glycemieChart = null;
+    let pressionChart = null;
+
+    // Charger les données depuis l'API
+    function chargerDonnees() {
+      const token = localStorage.getItem('token');
+      const user = JSON.parse(localStorage.getItem('user')); // Récupérer l'utilisateur connecté
+      const historiqueTable = document.getElementById('historique-table').getElementsByTagName('tbody')[0];
+      const poidsData = [];
+      const glycemieData = [];
+      const pressionSystoliqueData = [];
+      const pressionDiastoliqueData = [];
+      const dates = [];
+
+      // Vider le tableau historique avant de le remplir
+      historiqueTable.innerHTML = '';
+
+      fetch(`http://127.0.0.1:8000/api/indicateurs/?user=${user.id}`, { // Filtrer par utilisateur
+          method: 'GET',
+          headers: { 'Authorization': `Token ${token}` }
+      })
+      .then(response => response.json())
+      .then(donnees => {
+          donnees.forEach(indicateur => {
+              // Ajouter les données au tableau historique
+              const row = historiqueTable.insertRow();
+              row.innerHTML = `
+                  <td>${indicateur.date}</td>
+                  <td>${indicateur.glycemie}</td>
+                  <td>${indicateur.pression_systolique}/${indicateur.pression_diastolique}</td>
+                  <td>${indicateur.poids}</td>
+                  <td>${indicateur.taille}</td>
+              `;
+
+              // Ajouter les données pour les graphiques
+              dates.push(indicateur.date);
+              poidsData.push(indicateur.poids);
+              glycemieData.push(indicateur.glycemie);
+              pressionSystoliqueData.push(indicateur.pression_systolique);
+              pressionDiastoliqueData.push(indicateur.pression_diastolique);
+          });
+
+          // Mettre à jour les graphiques
+          mettreAJourGraphiques(dates, poidsData, glycemieData, pressionSystoliqueData, pressionDiastoliqueData);
+      })
+      .catch(error => console.error('Erreur lors du chargement des données :', error));
+    }
+
+    // Fonction pour mettre à jour les graphiques
+    function mettreAJourGraphiques(dates, poidsData, glycemieData, pressionSystoliqueData, pressionDiastoliqueData) {
+      // Détruire les graphiques existants s'ils existent
+      if (poidsChart) poidsChart.destroy();
+      if (glycemieChart) glycemieChart.destroy();
+      if (pressionChart) pressionChart.destroy();
+
+      // Créer le graphique pour le poids
+      poidsChart = new Chart(document.getElementById('graph-poids'), {
+        type: 'line',
+        data: {
+          labels: dates,
+          datasets: [{
+            label: 'Poids (kg)',
+            data: poidsData,
+            borderColor: 'rgba(75, 192, 192, 1)',
+            borderWidth: 2,
+            fill: false
+          }]
+        }
+      });
+
+      // Créer le graphique pour la glycémie
+      glycemieChart = new Chart(document.getElementById('graph-glycemie'), {
+        type: 'line',
+        data: {
+          labels: dates,
+          datasets: [{
+            label: 'Glycémie (mg/dL)',
+            data: glycemieData,
+            borderColor: 'rgba(153, 102, 255, 1)',
+            borderWidth: 2,
+            fill: false
+          }]
+        }
+      });
+
+      // Créer le graphique pour la pression artérielle
+      pressionChart = new Chart(document.getElementById('graph-pression'), {
+        type: 'line',
+        data: {
+          labels: dates,
+          datasets: [
+            {
+              label: 'Pression Systolique',
+              data: pressionSystoliqueData,
+              borderColor: 'rgba(255, 99, 132, 1)',
+              borderWidth: 2,
+              fill: false
+            },
+            {
+              label: 'Pression Diastolique',
+              data: pressionDiastoliqueData,
+              borderColor: 'rgba(54, 162, 235, 1)',
+              borderWidth: 2,
+              fill: false
+            }
+          ]
+        }
+      });
+    }
+
+    // Ajouter un nouvel indicateur via l'API
+    document.getElementById('form-indicateur').addEventListener('submit', function(event) {
+      event.preventDefault();
+
+      const token = localStorage.getItem('token');
+      const user = JSON.parse(localStorage.getItem('user')); // Récupérer l'utilisateur connecté
+      if (!token || !user) {
+          alert("Vous devez être connecté pour ajouter un indicateur.");
+          window.location.href = "login.html";
+          return;
+      }
+
+      const date = document.getElementById('date').value;
+      const glycemie = document.getElementById('glycemie').value;
+      const pressionSystolique = document.getElementById('pression-systolique').value;
+      const pressionDiastolique = document.getElementById('pression-diastolique').value;
+      const poids = document.getElementById('poids').value;
+      const taille = document.getElementById('taille').value;
+
+      const nouvelIndicateur = {
+          user: user.id, // Inclure l'ID de l'utilisateur connecté
+          date: date,
+          glycemie: parseFloat(glycemie),
+          pression_systolique: parseInt(pressionSystolique),
+          pression_diastolique: parseInt(pressionDiastolique),
+          poids: parseFloat(poids),
+          taille: parseFloat(taille)
+      };
+
+      fetch("http://127.0.0.1:8000/api/indicateurs/", {
+          method: "POST",
+          headers: {
+              "Authorization": `Token ${token}`,
+              "Content-Type": "application/json"
+          },
+          body: JSON.stringify(nouvelIndicateur)
+      })
+      .then(response => {
+          if (!response.ok) {
+              throw new Error("Erreur lors de l'ajout de l'indicateur.");
+          }
+          return response.json();
+      })
+      .then(data => {
+          alert("Indicateur ajouté avec succès !");
+          document.getElementById('form-indicateur').reset();
+          chargerDonnees(); // Recharger les données
+      })
+      .catch(error => {
+          console.error("Erreur :", error);
+          alert("Une erreur s'est produite lors de l'ajout de l'indicateur.");
+      });
+    });
+
+    // Charger les données au chargement de la page
+    window.onload = function() {
+      chargerDonnees();
+    };
+  </script>
+
+  <!--scprit gérant la connexion et déconnexion-->
+<script>
+  document.addEventListener("DOMContentLoaded", function(){
+    const token = localStorage.getItem("token");
+    console.log(token);
+    const user = JSON.parse(localStorage.getItem("user"));
+    const userInfo = document.getElementById("user-info");
+    const userName = document.getElementById("user-name");
+    const logout = document.getElementById("logout-btn");
+    const login = document.getElementById("login-btn");
+
+    //si l'utilisateur est connecté
+    if(token){
+      userInfo.style.display = "block";
+      userName.textContent = `${user.first_name}`;
+      login.style.display = "none";
+      logout.style.display = "block";
+    };
+
+    //logique de deconnexion
+    logout.addEventListener("click", function(){
+      localStorage.removeItem("token");
+      localStorage.removeItem("user");
+      window.location.href = "login.html";
+      console.log("Déconnexion réussie");
+    })
+  })
+</script>
+</body>
+</html>
